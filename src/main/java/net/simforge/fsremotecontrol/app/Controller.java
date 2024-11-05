@@ -2,6 +2,7 @@ package net.simforge.fsremotecontrol.app;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,9 @@ public class Controller {
     @GetMapping("ui/get")
     public ResponseEntity<Map<String, Object>> getSimData(@RequestParam("session") final String session) {
         final Map<String, Object> data = sessionData.get(session);
+        if (data == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
         return ResponseEntity.ok(data);
     }
 }
