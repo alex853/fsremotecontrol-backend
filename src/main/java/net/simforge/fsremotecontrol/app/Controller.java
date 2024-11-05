@@ -23,8 +23,9 @@ public class Controller {
     }
 
     @PostMapping("sim/post")
-    public ResponseEntity<Void> postSimData(@RequestBody final Map<String, Object> data) {
-        final String session = (String) data.get("session");
+    public ResponseEntity<Void> postSimData(
+            @RequestParam("session") final String session,
+            @RequestBody final Map<String, Object> data) {
         sessionData.put(session, data);
         return ResponseEntity.ok().build();
     }
