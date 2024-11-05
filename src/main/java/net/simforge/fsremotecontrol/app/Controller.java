@@ -34,4 +34,3 @@ public class Controller {
         return ResponseEntity.ok(data);
     }
 }
-
