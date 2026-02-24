@@ -40,7 +40,7 @@ public class ControllerV2 {
         });
 
         final List<String> newSimVars = data.values().stream()
-                .filter(e -> e.noValue)
+                .filter(e -> e.needToGetValue())
                 .map(e -> e.name)
                 .collect(Collectors.toList());
         if (!newSimVars.isEmpty()) {
@@ -80,6 +80,7 @@ public class ControllerV2 {
     private static class SimVarValue {
         private final String name;
         private long lastRead = System.currentTimeMillis();
+        private long lastReceived;
         private boolean noValue = true;
         private Object value;
 
@@ -94,6 +95,11 @@ public class ControllerV2 {
         public void updateValue(final Object value) {
             this.noValue = false;
             this.value = value;
+            this.lastReceived = System.currentTimeMillis();
+        }
+
+        public boolean needToGetValue() {
+            return this.noValue || (System.currentTimeMillis() - this.lastReceived > 60000);
         }
     }
 
