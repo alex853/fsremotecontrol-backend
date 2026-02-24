@@ -54,10 +54,7 @@ public class ControllerV2 {
         final String session = request.session;
         final List<String> requestedSimVars = request.simVars;
 
-        final Map<String, SimVarValue> data = sessionData.get(session);
-        if (data == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        final Map<String, SimVarValue> data = sessionData.computeIfAbsent(session, (s) -> new TreeMap<>());
 
         final Map<String, Object> result = new TreeMap<>();
         requestedSimVars.forEach(name -> {
