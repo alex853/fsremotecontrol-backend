@@ -97,7 +97,7 @@ public class ControllerV2 {
     }
 
     private static class UIPollingRequest {
-        private String session;
-        private String vars;
+        public String session;
+        public String vars;
     }
 }
