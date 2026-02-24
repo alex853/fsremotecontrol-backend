@@ -22,9 +22,10 @@ public class ControllerV2 {
     }
 
     @PostMapping("sim/poll")
-    public ResponseEntity<List<String>> postSimData(
-            @RequestParam("session") final String session,
-            @RequestBody final Map<String, Object> simData) {
+    public ResponseEntity<List<String>> postSimData(@RequestBody final SimPollingRequest request) {
+        final String session = request.session;
+        final Map<String, Object> simData = request.simData;
+
         log.info("Session {} - Getting Sim package with {} values", session, simData.size());
 
         final Map<String, SimVarValue> data = sessionData.computeIfAbsent(session, (s) -> new TreeMap<>());
@@ -99,5 +100,10 @@ public class ControllerV2 {
     private static class UIPollingRequest {
         public String session;
         public String vars;
+    }
+
+    private static class SimPollingRequest {
+        public String session;
+        public Map<String, Object> simData;
     }
 }
