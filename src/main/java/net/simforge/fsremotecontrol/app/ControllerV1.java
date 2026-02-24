@@ -12,8 +12,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("service/v1")
 @CrossOrigin
-public class Controller {
-    private static final Logger log = LoggerFactory.getLogger(Controller.class);
+public class ControllerV1 {
+    private static final Logger log = LoggerFactory.getLogger(ControllerV1.class);
 
     private static final Map<String, Map<String, Object>> sessionData = new HashMap<>();
 
