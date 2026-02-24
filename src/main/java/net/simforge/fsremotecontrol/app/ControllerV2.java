@@ -50,9 +50,10 @@ public class ControllerV2 {
     }
 
     @PostMapping("ui/poll")
-    public ResponseEntity<Map<String, Object>> getSimData(
-            @RequestParam("session") final String session,
-            @RequestBody final List<String> requestedSimVars) {
+    public ResponseEntity<Map<String, Object>> getSimData(@RequestBody final UIPollingRequest request) {
+        final String session = request.session;
+        final List<String> requestedSimVars = request.simVars;
+
         final Map<String, SimVarValue> data = sessionData.get(session);
         if (data == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -97,5 +98,10 @@ public class ControllerV2 {
             this.noValue = false;
             this.value = value;
         }
+    }
+
+    private class UIPollingRequest {
+        private String session;
+        private List<String> simVars;
     }
 }
