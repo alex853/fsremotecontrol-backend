@@ -26,6 +26,8 @@ public class ControllerV2 {
     public ResponseEntity<List<String>> postSimData(
             @RequestParam("session") final String session,
             @RequestBody final Map<String, Object> simData) {
+        log.info("Session {} - Getting Sim package with {} values", session, simData.size());
+
         final Map<String, SimVarValue> data = sessionData.computeIfAbsent(session, (s) -> new TreeMap<>());
 
         simData.forEach((name, value) -> {
@@ -41,6 +43,9 @@ public class ControllerV2 {
                 .filter(e -> e.noValue)
                 .map(e -> e.name)
                 .collect(Collectors.toList());
+        if (!newSimVars.isEmpty()) {
+            log.info("Session {} - Notifying sim client about new variables: {}", session, newSimVars);
+        }
         return ResponseEntity.ok(newSimVars);
     }
 
@@ -54,10 +59,11 @@ public class ControllerV2 {
         }
 
         final Map<String, Object> result = new TreeMap<>();
-        requestedSimVars.forEach(sv -> {
-            final SimVarValue svValue = data.get(sv);
+        requestedSimVars.forEach(name -> {
+            final SimVarValue svValue = data.get(name);
             if (svValue == null) {
-                data.put(sv, new SimVarValue(sv));
+                data.put(name, new SimVarValue(name));
+                log.info("Session {} - Adding sim var {} to session", session, name);
                 return;
             }
 
@@ -66,9 +72,10 @@ public class ControllerV2 {
                 return;
             }
 
-            result.put(sv, svValue.value);
+            result.put(name, svValue.value);
         });
 
+        log.info("Session {} - Sending UI package with {} values", session, result.size());
         return ResponseEntity.ok(result);
     }
 
