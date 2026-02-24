@@ -100,7 +100,7 @@ public class ControllerV2 {
         }
     }
 
-    private class UIPollingRequest {
+    private static class UIPollingRequest {
         private String session;
         private List<String> simVars;
     }
