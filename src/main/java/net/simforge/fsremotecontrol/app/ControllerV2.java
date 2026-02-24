@@ -52,7 +52,7 @@ public class ControllerV2 {
     @PostMapping("ui/poll")
     public ResponseEntity<Map<String, Object>> getSimData(@RequestBody final UIPollingRequest request) {
         final String session = request.session;
-        final List<String> requestedSimVars = request.simVars;
+        final List<String> requestedSimVars = List.of(request.simVars.split(","));
 
         final Map<String, SimVarValue> data = sessionData.computeIfAbsent(session, (s) -> new TreeMap<>());
 
@@ -99,6 +99,6 @@ public class ControllerV2 {
 
     private static class UIPollingRequest {
         private String session;
-        private List<String> simVars;
+        private String simVars;
     }
 }
