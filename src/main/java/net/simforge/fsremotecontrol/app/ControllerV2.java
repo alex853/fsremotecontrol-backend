@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("service/v2")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class ControllerV2 {
     private static final Logger log = LoggerFactory.getLogger(ControllerV2.class);
 
