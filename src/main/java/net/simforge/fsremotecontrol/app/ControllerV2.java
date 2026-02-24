@@ -2,7 +2,6 @@ package net.simforge.fsremotecontrol.app;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,7 +51,7 @@ public class ControllerV2 {
     @PostMapping("ui/poll")
     public ResponseEntity<Map<String, Object>> getSimData(@RequestBody final UIPollingRequest request) {
         final String session = request.session;
-        final List<String> requestedSimVars = List.of(request.simVars.split(","));
+        final List<String> requestedSimVars = Arrays.asList(request.simVars.split(","));
 
         final Map<String, SimVarValue> data = sessionData.computeIfAbsent(session, (s) -> new TreeMap<>());
 
